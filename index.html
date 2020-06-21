@@ -1,24 +1,32 @@
 <!DOCTYPE html>
 <html>
     <title>☕</title>
-    <!-- Global site tag (gtag.js) - Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=UA-159220391-4"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-
-      gtag('config', 'UA-159220391-4');
-    </script>
+    <!-- Tracking -->
+    <script async src="https://track.everyone.wtf/tracker.js" data-ackee-server="https://track.everyone.wtf" data-ackee-domain-id="829b5f72-4040-4fd5-9943-3e49082f4312"></script>
 
     <style>
         .hey { background-color: white; }
         .girl { color: white;  }
         .sup { display: none; }
+
+        .legal {
+            position: absolute;
+            margin-bottom: 5px;
+            margin-right: 5px;
+            bottom: 0;
+            right: 0;
+        }
+
+        .legal > a {
+            color: blue;
+        }
     </style>
     <body class="hey">
         Coffee <span class="sup">at Starbucks?</span> is too expensive. <br/>
         <span class="girl">Also if you suspect you're spending too much on coffee, you probably are. </span>
         <!-- Why are you reading source code? You can do more productive things. -->
+        <small class='legal'>
+            For legal reasons I must also link <a href="https://inform.everyone.wtf/" target="_blank">my Privacy Policy and Imprint</a>.
+        </small>
     </body>
 </html>
