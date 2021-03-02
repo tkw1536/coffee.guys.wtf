@@ -1,3 +1,11 @@
+# Build the app
+FROM golang as builder
+
+# build the app
+WORKDIR /app/
+ADD . /app/
+RUN CGO_ENABLED=0 GOOS=linux go build -o /app/main /app/main.go
+
 # Create a new user 'www-data'
 FROM alpine as permission
 
@@ -12,13 +20,6 @@ RUN adduser \
     --uid "${UID}" \
     "${USER}"
 
-# Build the app
-FROM golang as builder
-
-WORKDIR /app/
-ADD *.go /app/
-RUN CGO_ENABLED=0 GOOS=linux go build -o /app/main /app/main.go
-
 
 # add it into a scratch image
 FROM scratch
@@ -30,7 +31,6 @@ COPY --from=permission /etc/group /etc/group
 
 # add the app and static files
 COPY --from=builder /app/main /app/main
-ADD static /app/static
 
 # and set the entry command
 EXPOSE 8080
