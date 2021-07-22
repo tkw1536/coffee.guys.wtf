@@ -9,17 +9,9 @@ RUN CGO_ENABLED=0 GOOS=linux go build -o /app/main /app/main.go
 # Create a new user 'www-data'
 FROM alpine as permission
 
-ENV USER=www-data
-ENV UID=82
-RUN adduser \
-    --disabled-password \
-    --gecos "" \
-    --home "/nonexistent" \
-    --shell "/sbin/nologin" \
-    --no-create-home \
-    --uid "${UID}" \
-    "${USER}"
-
+RUN set -x ; \
+  addgroup -g 82 -S www-data ; \
+  adduser -u 82 -D -S -G www-data www-data && exit 0 ; exit 1
 
 # add it into a scratch image
 FROM scratch
