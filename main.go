@@ -1,47 +1,27 @@
 package main
 
 import (
-	"embed"
+	_ "embed"
 	"fmt"
-	"io/fs"
 	"log"
 	"net/http"
 )
 
-//go:embed static
-var staticFS embed.FS
-
-// the root filesysem
-var rootFS fs.FS
-
-func init() {
-	var err error
-	rootFS, err = fs.Sub(staticFS, "static")
-	if err != nil {
-		panic(err)
-	}
-}
-
+//go:embed static/index.html
+var indexHTML []byte
 var notFound = []byte("Not Found")
-var internalServerError = []byte("Internal Server Error")
 
 func main() {
-
-	server := http.FileServer(http.FS(rootFS))
-
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
 		switch r.URL.Path {
 		case "", "/", "/index.html":
-			bytes, err := fs.ReadFile(rootFS, "index.html")
-			if err != nil {
-				w.WriteHeader(http.StatusInternalServerError)
-				w.Write(internalServerError)
-				return
-			}
-			w.WriteHeader(418)
-			w.Write(bytes)
+			w.WriteHeader(http.StatusTeapot)
+			w.Header().Add("Content-Type", "text/html")
+			w.Write(indexHTML)
 		default:
-			server.ServeHTTP(w, r)
+			w.WriteHeader(http.StatusNotFound)
+			w.Header().Add("Content-Type", "text/plain")
+			w.Write(notFound)
 		}
 	})
 	fmt.Println("coffee.guys.wtf listening on 0.0.0.0:8080")
